@@ -4,7 +4,7 @@ const config = AWS.config.update({
   region: "ap-south-1",
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  endpoint: "http://43.205.180.238:9000",
+  endpoint: "http://3.109.20.21:9000",
 });
 
 // const dynamo = new AWS.DynamoDB.DocumentClient();

@@ -16,6 +16,7 @@ Backend.zip
 # production
 /build
 package-lock.json
+.env
 
 # misc
 .DS_Store

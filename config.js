@@ -1,15 +1,15 @@
-const AWS = require('aws-sdk');
+const AWS = require("aws-sdk");
 
 const config = AWS.config.update({
-  region: 'ap-south-1',
+  region: "ap-south-1",
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  endpoint: 'http://localhost:8000',
+  endpoint: "http://43.205.180.238:9000",
 });
 
 // const dynamo = new AWS.DynamoDB.DocumentClient();
 
-const podetails = 'podetails';
+const podetails = "podetails";
 
 var dynamodb = new AWS.DynamoDB();
 module.exports = { config, dynamodb, podetails };

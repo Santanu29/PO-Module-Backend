@@ -1,4 +1,4 @@
-const config = require('../config');
+const config = require("../config");
 
 //To Sort the data into json
 const sortData = (data) => {
@@ -16,8 +16,8 @@ const sortData = (data) => {
       const record = {
         description: listdata.M.description.S,
         amount: listdata.M.amount.S,
-        raisedAmount: '',
-        dmrNo: '',
+        raisedAmount: "",
+        dmrNo: "",
       };
       return record;
     }
@@ -39,7 +39,8 @@ const getData = async (id) => {
       ponumber: { S: id },
     },
   };
-  const data = config.dynamodb.getItem(values).promise();
+  const data = await config.dynamodb.getItem(values).promise();
+  console.log(data);
   return data;
 };
 
@@ -65,7 +66,7 @@ const insert = (data) => {
   };
   config.dynamodb.putItem(params, (err) => {
     if (err) {
-      console.error('Unable to add po details', err);
+      console.error("Unable to add po details", err);
     }
   });
 };
@@ -89,12 +90,12 @@ const updateData = (id, data) => {
     Key: {
       ponumber: { S: id },
     },
-    UpdateExpression: 'SET #X = :X',
+    UpdateExpression: "SET #X = :X",
     ExpressionAttributeValues: {
-      ':X': { L: itemslist },
+      ":X": { L: itemslist },
     },
     ExpressionAttributeNames: {
-      '#X': 'details',
+      "#X": "details",
     },
   };
 

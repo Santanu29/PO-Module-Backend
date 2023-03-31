@@ -1,4 +1,5 @@
 // Entry Point of Api
+require("dotenv").config();
 const express = require("express");
 const service = require("./services/purchaseQueries");
 const xlService = require("./services/xls_edit.js");
@@ -26,20 +27,26 @@ app.post("/uploadFile", (req, res) => {
 });
 
 // To get items
+
 app.get("/getdetails/:id", async (req, res) => {
-  const id = req.params.id;
-  const data = await service.getData(id);
-  if (Object.keys(data).length !== 0) {
-    const newData = service.sortData(data);
-    res.send(newData);
-  } else res.sendStatus(404);
+  try {
+    const id = req.params.id;
+    const data = await service.getData(id);
+    console.log(data);
+    if (Object.keys(data).length !== 0) {
+      const newData = service.sortData(data);
+      res.send(newData);
+    } else res.sendStatus(404);
+  } catch (e) {
+    res.send(e);
+  }
 });
 
 // To post details
 app.post("/poDetails", (req, res) => {
   data = req.body;
-
   service.insert(data);
+
   res.send("inserted");
 });
 
@@ -47,7 +54,6 @@ app.post("/poDetails", (req, res) => {
 app.patch("/poDetails/:id", (req, res) => {
   const id = req.params.id;
   const data = req.body;
-  //console.log(data);
   service.updateData(id, data);
   res.send("inserted");
 });

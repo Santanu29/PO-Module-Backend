@@ -6,8 +6,6 @@ const config = AWS.config.update({
   region: "ap-south-1",
 });
 
-const dynamo = new AWS.DynamoDB.DocumentClient();
-
 const podetails = "podetails";
 
 var dynamodb = new AWS.DynamoDB();

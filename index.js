@@ -13,6 +13,7 @@ app.use(express.json());
 module.exports = app.use(
   cors({
     origin: "http://43.205.78.249:3000/",
+    // origin: "http://localhost:3000/",
   })
 );
 

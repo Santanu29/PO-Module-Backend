@@ -9,4 +9,4 @@ const config = AWS.config.update({
 const podetails = "podetails";
 
 var dynamodb = new AWS.DynamoDB();
-module.exports = { config, dynamodb, podetails, dynamo };
+module.exports = { config, dynamodb, podetails };

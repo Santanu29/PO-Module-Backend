@@ -20,7 +20,8 @@
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.18.11/xlsx-0.18.11.tgz"
   },
   "scripts": {
-    "test": "mocha 'test-case/**/*.spec.js'"
+    "test": "mocha 'test-case/**/*.spec.js'",
+    "start": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",

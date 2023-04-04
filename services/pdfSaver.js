@@ -13,6 +13,7 @@ const uploadPdf = (file, id) => {
     Bucket: credentials.bucketName,
     Key: file.originalname,
     Body: file.buffer,
+ACL: "public-read-write",
   };
 
   s3.upload(params, async (err, data) => {

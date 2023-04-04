@@ -100,7 +100,6 @@ const insert = (data) => {
       M: {
         description: { S: item.po_description },
         amount: { S: item.amount },
-        date: { S: item.date },
       },
     };
     return record;

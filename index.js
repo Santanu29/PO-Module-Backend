@@ -1,13 +1,14 @@
 // Entry Point of Api
 const express = require('express');
 require('dotenv').config();
+const app = express();
+const cors = require('cors');
+
 const service = require('./services/purchaseQueries');
 const xlService = require('./services/xls_edit.js');
 const upload = require('./services/pdfSaver.js');
-const app = express();
-const port = 9000;
-const cors = require('cors');
 
+const port = process.env.PORT || 9000;
 app.use(express.json());
 app.use(cors());
 

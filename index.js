@@ -73,6 +73,7 @@ app.patch("/poDetails/:id", (req, res) => {
 // To post Details for excel file data
 app.post("/xlData", (req, res) => {
   const data = req.body;
+  console.log(data, "backend data");
   xlService.xls_insert(data);
   res.send("inserted");
 });

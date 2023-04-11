@@ -1,17 +1,22 @@
-// Entry Point of Api
 const express = require('express');
+const cors = require('cors');
 require('dotenv').config();
 const app = express();
-const cors = require('cors');
-
+const port = process.env.PORT || 9000;
 const service = require('./services/purchaseQueries');
 const xlService = require('./services/xls_edit.js');
 const upload = require('./services/pdfSaver.js');
 
-const port = process.env.PORT || 9000;
 app.use(express.json());
 app.use(cors());
 
+// Error handling middleware
+// app.use((err, req, res) => {
+//   console.error(err.stack);
+//   res.sendStatus(500).send('Something went wrong!');
+// });
+
+// Upload file for PO orders
 app.post('/uploadfile', upload.upload, (req, res) => {
   try {
     if (req.file) {
@@ -24,58 +29,92 @@ app.post('/uploadfile', upload.upload, (req, res) => {
   }
 });
 
-//To get all items
+// Get all PO items
 app.get('/getAllItems', async (req, res) => {
-  const data = await service.getAllPO();
-  if (Object.keys(data).length !== 0) {
-    const newData = service.sortAll(data);
-    res.send(newData);
-  } else res.sendStatus(404);
+  try {
+    const data = await service.getAllPO();
+    if (Object.keys(data).length !== 0) {
+      const newData = service.sortAll(data);
+      res.send(newData);
+    } else {
+      res.sendStatus(404);
+    }
+  } catch (err) {
+    console.log(err, 'GetAllItem Function');
+  }
 });
 
-// To get items
+// Get details of a specific PO item
 app.get('/getdetails/:id', async (req, res) => {
-  const id = req.params.id;
-  const data = await service.getData(id);
-  if (Object.keys(data).length !== 0) {
-    const newData = service.sortData(data);
-    res.send(newData);
-  } else res.sendStatus(404);
+  try {
+    const id = req.params.id;
+    const data = await service.getData(id);
+    if (Object.keys(data).length !== 0) {
+      const newData = service.sortData(data);
+      res.send(newData);
+    } else {
+      res.sendStatus(404);
+    }
+  } catch (err) {
+    console.log(err, 'Getdetails Function');
+  }
 });
 
-// To post details
-app.post('/poDetails', (req, res) => {
-  const data = req.body;
-  service.insert(data);
-  res.send('inserted');
+// Insert a new PO item
+app.post('/poDetails', async (req, res) => {
+  try {
+    const data = req.body;
+    service.insert(data);
+    res.send('Inserted successfully');
+  } catch (err) {
+    console.log(err, 'Podetails Function');
+  }
 });
 
-// To Update Details
-app.patch('/poDetails/:id', (req, res) => {
-  const id = req.params.id;
-  const data = req.body;
-  //console.log(data);
-  service.updateData(id, data);
-  res.send('inserted');
+// Update details of a specific PO item
+app.patch('/poDetails/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = req.body;
+    service.updateData(id, data);
+    res.send('Updated successfully.');
+  } catch (err) {
+    console.log(err, 'podetails Function');
+  }
 });
 
-// To post Details for excel file data
-app.post('/xlData', (req, res) => {
-  const data = req.body;
-  console.log(data, "backend data");
-  xlService.xls_insert(data);
-  res.send('inserted');
-});
-//To Get Xls download
-app.get('/xlData', (req, res) => {
-  const data = xlService.xldownload();
-  res.send(data);
+// Merge EV data with an Excel file
+app.post('/xlData', async (req, res) => {
+  try {
+    const data = req.body;
+    xlService.xls_insert(data);
+    res.send('EV Data inserted successfully.');
+  } catch (err) {
+    console.log(err);
+  }
 });
 
-app.get('/dbFile/:filename', (req, res, next) => {
-  const fileName = req.params.filename;
-  console.log(req.params);
-  res.download(`./Resources/uploads/${fileName}`);
+// Download Excel file
+app.get('/xlData', async (req, res) => {
+  try {
+    const data = xlService.xldownload();
+    res.send(data);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
-app.listen(port, () => console.log(`App Running on port ${port}!`));
+// Download a file from the server
+app.get('/dbFile/:filename', (req, res) => {
+  try {
+    const fileName = req.params.filename;
+    res.download(`./Resources/uploads/${fileName}`);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+// Start the server
+app.listen(port, () => {
+  console.log(`App running on port ${port}!`);
+});

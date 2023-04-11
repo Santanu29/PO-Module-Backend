@@ -1,9 +1,9 @@
-const config = require("../config");
+const config = require('../config');
 
 //To fetch All
 const getAllPO = async () => {
   const params = {
-    TableName: "podetails",
+    TableName: 'podetails',
   };
   const po = await config.dynamodb.scan(params).promise();
   return po;
@@ -43,9 +43,9 @@ const sortData = (data) => {
       const record = {
         description: listdata.M.description.S,
         amount: listdata.M.amount.S,
-        raisedAmount: "",
-        dmrNo: "",
-        date: "",
+        raisedAmount: '',
+        dmrNo: '',
+        date: '',
       };
       return record;
     }
@@ -90,12 +90,12 @@ const scanTable = async () => {
   do {
     items = await config.dynamodb.scan(params).promise();
     items.Items.forEach((item) => scanResults.push(item));
-  } while (typeof items.LastEvaluatedKey !== "undefined");
+  } while (typeof items.LastEvaluatedKey !== 'undefined');
   return scanResults;
 };
 //To post Data into DB
 const insert = (data) => {
-  var itemslist = data.details.items.map(function (item) {
+  const itemslist = data.details.items.map(function (item) {
     var record = {
       M: {
         description: { S: item.po_description },
@@ -118,7 +118,7 @@ const insert = (data) => {
 
   config.dynamodb.putItem(params, (err) => {
     if (err) {
-      console.error("Unable to add po details", err);
+      console.error('Unable to add po details', err);
     }
   });
 };
@@ -143,12 +143,12 @@ const updateData = (id, data) => {
     Key: {
       ponumber: { S: id },
     },
-    UpdateExpression: "SET #X = :X",
+    UpdateExpression: 'SET #X = :X',
     ExpressionAttributeValues: {
-      ":X": { L: itemslist },
+      ':X': { L: itemslist },
     },
     ExpressionAttributeNames: {
-      "#X": "details",
+      '#X': 'details',
     },
   };
 
